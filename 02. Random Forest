@@ -1,0 +1,23 @@
+# -*- coding: utf-8 -*-
+# 나눔고딕 폰트 설치
+!sudo apt-get install -y fonts-nanum
+!sudo fc-cache -fv
+!rm ~/.cache/matplotlib -rf
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+import seaborn as sns
+import shap
+mpl.rc("font", family="NanumGothic")
+mpl.rcParams['axes.unicode_minus'] = False
+
+from sklearn.model_selection import KFold
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import accuracy_score, f1_score, recall_score, precision_score
+
+
+# 데이터 불러오기(변인들이 선별된 데이터)
+kbo_matches_pure_saber_vif_scale = pd.read_excel("/content/drive/MyDrive/논문(딥러닝)/최종데이터.xlsx")
