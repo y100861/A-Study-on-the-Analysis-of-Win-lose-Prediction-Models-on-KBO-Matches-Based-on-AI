@@ -12,6 +12,7 @@ import seaborn as sns
 import shap
 mpl.rc("font", family="NanumGothic")
 mpl.rcParams['axes.unicode_minus'] = False
+plt.rc('font', family='NanumBarunGothic')
 
 from sklearn.model_selection import KFold
 from xgboost import XGBClassifier
