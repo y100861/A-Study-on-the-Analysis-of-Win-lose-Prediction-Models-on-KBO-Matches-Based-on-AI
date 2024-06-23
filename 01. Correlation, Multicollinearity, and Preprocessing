@@ -84,4 +84,42 @@ vif_3 = pd.DataFrame()
 vif_3["VIF Factor"] = [variance_inflation_factor(kbo_matches_pure_saber_vif.values, i) for i in range(kbo_matches_pure_saber_vif.shape[1])]
 vif_3["변인"] = kbo_matches_pure_saber_vif.columns
 
-=========================== 변인 선별 완료 ===========================
+
+# 선별된 변인들 이름 저장
+vif_columns = kbo_matches_pure_saber_vif.columns
+
+
+# 데이터 표준화
+scaler = StandardScaler()
+kbo_matches_pure_saber_vif_scale = scaler.fit_transform(kbo_matches_pure_saber_vif)
+kbo_matches_pure_saber_vif_scale = pd.DataFrame(kbo_matches_pure_saber_vif_scale, columns=vif_columns)
+
+
+# 팀 이름 변인 원-핫 인코딩
+team_names = pd.get_dummies(team_names, dtype=int)
+team_names = team_names.rename(columns={"팀이름_KIA": "KIA",
+                                        "팀이름_KT": "KT",
+                                        "팀이름_LG": "LG",
+                                        "팀이름_NC": "NC",
+                                        "팀이름_SSG": "SSG",
+                                        "팀이름_두산": "두산",
+                                        "팀이름_롯데": "롯데",
+                                        "팀이름_삼성": "삼성",
+                                        "팀이름_키움": "키움",
+                                        "팀이름_한화": "한화"})
+kbo_matches_pure_saber_vif_scale = pd.concat([kbo_matches_pure_saber_vif_scale, team_names], axis=1)
+
+
+# 홈/어웨이 변인 전처리
+home_away = home_away.apply(lambda x: 1 if x == "홈" else 0)
+kbo_matches_pure_saber_vif_scale = pd.concat([home_away, kbo_matches_pure_saber_vif_scale], axis=1)
+
+
+# 승패변인 합치기
+kbo_matches_pure_saber_vif_scale = pd.concat([y, kbo_matches_pure_saber_vif_scale], axis=1)
+
+
+# 최종 데이터 세트 저장
+kbo_matches_pure_saber_vif_scale.to_excel("/content/drive/MyDrive/논문(딥러닝)/최종데이터.xlsx")
+
+===================================== 최종 데이터 세트 완성 =====================================
